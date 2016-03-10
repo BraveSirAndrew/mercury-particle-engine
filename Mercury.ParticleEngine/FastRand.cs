@@ -1,4 +1,6 @@
-﻿namespace Mercury.ParticleEngine
+﻿using System.Runtime.CompilerServices;
+
+namespace Mercury.ParticleEngine
 {
     using System;
 
@@ -27,13 +29,14 @@
             return (_state >> 16) & 0x7FFF;
         }
 
-        /// <summary>
-        /// Gets the next random integer value which is greater than zero and less than or equal to
-        /// the specified maxmimum value.
-        /// </summary>
-        /// <param name="max">The maximum random integer value to return.</param>
-        /// <returns>A random integer value between zero and the specified maximum value.</returns>
-        static public int NextInteger(int max)
+		/// <summary>
+		/// Gets the next random integer value which is greater than zero and less than or equal to
+		/// the specified maxmimum value.
+		/// </summary>
+		/// <param name="max">The maximum random integer value to return.</param>
+		/// <returns>A random integer value between zero and the specified maximum value.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static public int NextInteger(int max)
         {
             return (int)(max * NextSingle());
         }
@@ -48,12 +51,13 @@
             return (int)((max - min) * NextSingle()) + min;
         }
 
-        /// <summary>
-        /// Gets the next random integer between the specified range of values.
-        /// </summary>
-        /// <param name="range">A range representing the inclusive minimum and maximum values.</param>
-        /// <returns>A random integer between the specified minumum and maximum values.</returns>
-        static public int NextInteger(Range range)
+		/// <summary>
+		/// Gets the next random integer between the specified range of values.
+		/// </summary>
+		/// <param name="range">A range representing the inclusive minimum and maximum values.</param>
+		/// <returns>A random integer between the specified minumum and maximum values.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static public int NextInteger(Range range)
         {
             return NextInteger(range.X, range.Y);
         }
@@ -78,23 +82,25 @@
             return max * NextSingle();
         }
 
-        /// <summary>
-        /// Gets the next random single value between the specified minimum and maximum values.
-        /// </summary>
-        /// <param name="min">The inclusive minimum value.</param>
-        /// <param name="max">The inclusive maximum value.</param>
-        /// <returns>A random single value between the specified minimum and maximum values.</returns>
-        static public float NextSingle(float min, float max)
+		/// <summary>
+		/// Gets the next random single value between the specified minimum and maximum values.
+		/// </summary>
+		/// <param name="min">The inclusive minimum value.</param>
+		/// <param name="max">The inclusive maximum value.</param>
+		/// <returns>A random single value between the specified minimum and maximum values.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static public float NextSingle(float min, float max)
         {
             return ((max - min) * NextSingle()) + min;
         }
 
-        /// <summary>
-        /// Gets the next random single value between the specified range of values.
-        /// </summary>
-        /// <param name="range">A range representing the inclusive minimum and maximum values.</param>
-        /// <returns>A random single value between the specified minimum and maximum values.</returns>
-        static public float NextSingle(RangeF range)
+		/// <summary>
+		/// Gets the next random single value between the specified range of values.
+		/// </summary>
+		/// <param name="range">A range representing the inclusive minimum and maximum values.</param>
+		/// <returns>A random single value between the specified minimum and maximum values.</returns>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		static public float NextSingle(RangeF range)
         {
             return NextSingle(range.X, range.Y);
         }
@@ -115,6 +121,7 @@
             *vector = new Vector((float)Math.Cos(angle), (float)Math.Sin(angle));
         }
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		static public void NextUnitVector(ref float x, ref float y)
 		{
 			var angle = NextAngle();
@@ -130,6 +137,7 @@
                                  NextSingle(range.Min.L, range.Max.L));
         }
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		static public void NextColour(ref float R, ref float G, ref float B, ColourRange range)
 		{
 			R = NextSingle(range.Min.H, range.Max.H);

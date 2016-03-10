@@ -1,10 +1,13 @@
-﻿namespace Mercury.ParticleEngine.Profiles
+﻿using System.Runtime.CompilerServices;
+
+namespace Mercury.ParticleEngine.Profiles
 {
     public class RingProfile : Profile
     {
         public float Radius { get; set; }
         public bool Radiate { get; set; }
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override void GetOffsetAndHeading(ref Particle particles, int index)
 		{
 			float x = 0;

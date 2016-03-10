@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Mercury.ParticleEngine.Modifiers
+﻿namespace Mercury.ParticleEngine.Modifiers
 {
 	public class RotateToFaceDirectionModifier : Modifier
 	{
@@ -8,7 +6,7 @@ namespace Mercury.ParticleEngine.Modifiers
 		{
 			while (count-- > 0)
 			{
-				particle.Rotation[count] = (float) Math.Atan2(particle.VY[count], particle.VX[count]);
+				particle.Rotation[count] = FastMath.Atan2(particle.VY[count], particle.VX[count]);
 			}
 		}
 	}

@@ -1,8 +1,11 @@
-﻿namespace Mercury.ParticleEngine.Profiles
+﻿using System.Runtime.CompilerServices;
+
+namespace Mercury.ParticleEngine.Profiles
 {
     public class PointProfile : Profile
     {
-        public override void GetOffsetAndHeading(ref Particle particles, int index)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public override void GetOffsetAndHeading(ref Particle particles, int index)
         {
 	        particles.X[index] = 0;
 	        particles.Y[index] = 0;

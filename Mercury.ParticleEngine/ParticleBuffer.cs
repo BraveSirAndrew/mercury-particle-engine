@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Runtime.InteropServices;
+using System.Runtime.CompilerServices;
 
 namespace Mercury.ParticleEngine
 {
@@ -81,51 +81,33 @@ namespace Mercury.ParticleEngine
 			Reclaim(number, Particles.Mass);
 		}
 
+		public void Reset()
+		{
+			_tail = 0;
+			Index = 0;
+		}
+
 		private void Reclaim(int number, float[] array)
 		{
 			Array.Copy(array, number, array, 0, _tail);
 		}
 
-		public void CopyTo(IntPtr destination)
+		public void CopyTo(IntPtr buffer)
 		{
-			var rowSize = Count * sizeof(float);
+			var pDst = (float*)buffer.ToPointer();
 
-			fixed (float* data = Particles.Age)
-				memcpy(destination, (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.X)
-				memcpy(IntPtr.Add(destination, rowSize), (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.Y)
-				memcpy(IntPtr.Add(destination, rowSize * 2), (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.R)
-				memcpy(IntPtr.Add(destination, rowSize * 3), (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.G)
-				memcpy(IntPtr.Add(destination, rowSize * 4), (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.B)
-				memcpy(IntPtr.Add(destination, rowSize * 5), (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.Opacity)
-				memcpy(IntPtr.Add(destination, rowSize * 6), (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.Scale)
-				memcpy(IntPtr.Add(destination, rowSize * 7), (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.Rotation)
-				memcpy(IntPtr.Add(destination, rowSize * 8), (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.VX)
-				memcpy(IntPtr.Add(destination, rowSize * 9), (IntPtr)data, rowSize);
-
-			fixed (float* data = Particles.VY)
-				memcpy(IntPtr.Add(destination, rowSize * 10), (IntPtr)data, rowSize);
+			Copy(ref pDst, Particles.Age);
+			Copy(ref pDst, Particles.X);
+			Copy(ref pDst, Particles.Y);
+			Copy(ref pDst, Particles.R);
+			Copy(ref pDst, Particles.G);
+			Copy(ref pDst, Particles.B);
+			Copy(ref pDst, Particles.Opacity);
+			Copy(ref pDst, Particles.Scale);
+			Copy(ref pDst, Particles.Rotation);
+			Copy(ref pDst, Particles.VX);
+			Copy(ref pDst, Particles.VY);
 		}
-
-		[DllImport("msvcrt.dll", EntryPoint = "memcpy", CallingConvention = CallingConvention.Cdecl, SetLastError = false)]
-		public static extern void memcpy(IntPtr dest, IntPtr src, int count);
 
 		public void Dispose()
 		{
@@ -140,6 +122,26 @@ namespace Mercury.ParticleEngine
 		~ParticleBuffer()
 		{
 			Dispose();
+		}
+
+		/// <summary>
+		/// Fastest possible copy to unmanaged memory. JIT compiles to SSE/AVX instructions on .Net > 4.5. Even faster than native memcpy!
+		/// </summary>
+		/// <param name="pDst"></param>
+		/// <param name="particleData"></param>
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		private void Copy(ref float* buffer, float[] particleData)
+		{
+			fixed (float* data = particleData)
+			{
+				var pSrc = data;
+				var pDst = buffer;
+				for (var i = 0; i < _tail; i++)
+				{
+					*pDst++ = *pSrc++;
+				}
+				buffer = pDst;
+			}
 		}
 	}
 }

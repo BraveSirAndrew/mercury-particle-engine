@@ -1,11 +1,14 @@
-﻿namespace Mercury.ParticleEngine.Profiles
+﻿using System.Runtime.CompilerServices;
+
+namespace Mercury.ParticleEngine.Profiles
 {
     public class CircleProfile : Profile
     {
         public float Radius;
         public bool Radiate;
 
-        public override void GetOffsetAndHeading(ref Particle particles, int index)
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public override void GetOffsetAndHeading(ref Particle particles, int index)
         {
             var dist = FastRand.NextSingle(0f, Radius);
 

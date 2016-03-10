@@ -1,10 +1,13 @@
-﻿namespace Mercury.ParticleEngine.Profiles
+﻿using System.Runtime.CompilerServices;
+
+namespace Mercury.ParticleEngine.Profiles
 {
 	public class BoxProfile : Profile
 	{
 		public float Width;
 		public float Height;
 
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public override void GetOffsetAndHeading(ref Particle particles, int index)
 		{
 			switch (FastRand.NextInteger(3))

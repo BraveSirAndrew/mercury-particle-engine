@@ -47,6 +47,7 @@
     <Compile Include="ColourRange.cs" />
     <Compile Include="Coordinate.cs" />
     <Compile Include="Emitter.cs" />
+    <Compile Include="FastMath.cs" />
     <Compile Include="Modifiers\Approximate.cs" />
     <Compile Include="Modifiers\RotateToFaceDirectionModifier.cs" />
     <Compile Include="Modifiers\ScaleModifier.cs" />
